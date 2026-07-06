@@ -33,7 +33,7 @@ public class GrillSlot : MonoBehaviour, IInteractable
                 currentObject.transform.localPosition = Vector3.zero;
                 currentObject.transform.localRotation = Quaternion.identity;
                 
-                // KOYARKEN FİZİĞİ KAPATIYORUZ
+               
                 Rigidbody rb = currentObject.GetComponent<Rigidbody>();
                 if (rb != null) {
                     rb.isKinematic = true;
@@ -65,22 +65,22 @@ public class GrillSlot : MonoBehaviour, IInteractable
     {
         isCooking = false;
 
-        // 1. ESKİSİNİ SİL
+       
         Destroy(currentObject);
 
-        // 2. YENİSİNİ OLUŞTUR (Dünya koordinatlarını umursama)
+       
         GameObject pismisSistem = Instantiate(pismisSistemPrefab);
         
-        // 3. FİZİĞİ ANINDA ÖLDÜR (Fırlamayı durduran ana yer)
+      
         Rigidbody rb = pismisSistem.GetComponent<Rigidbody>();
         if (rb != null) {
             rb.isKinematic = true;
             rb.useGravity = false;
-            rb.linearVelocity = Vector3.zero; // Eğer bir hız kazandıysa sıfırla
+            rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
 
-        // 4. ŞİMDİ YERİNE KOY
+        
         pismisSistem.transform.SetParent(this.transform);
         pismisSistem.transform.localPosition = Vector3.zero; 
         pismisSistem.transform.localRotation = Quaternion.Euler(pismisRotasyon);

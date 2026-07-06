@@ -2,7 +2,7 @@
 
 public class CuttingSystem : MonoBehaviour
 {
-    public float cutRange = 10f; // Menzili test için artırdık
+    public float cutRange = 10f; 
     public LayerMask cutLayer;
     public KeyCode cutKey = KeyCode.Mouse0;
 
@@ -49,7 +49,7 @@ public class CuttingSystem : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        // Görsel Yardımcı: Unity Scene ekranında ışını kırmızı bir çizgi olarak görmeni sağlar
+        
         Debug.DrawRay(ray.origin, ray.direction * cutRange, Color.red, 2f);
 
         if (Physics.Raycast(ray, out hit, cutRange, cutLayer))

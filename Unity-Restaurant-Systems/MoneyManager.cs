@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
-using TMPro; // TextMeshPro kullandığımız için bunu ekliyoruz
+using TMPro; 
 
 public class MoneyManager : MonoBehaviour
 {
-    public static MoneyManager Instance; // Her yerden ulaşmak için anahtar
+    public static MoneyManager Instance; 
 
     [Header("Ayarlar")]
     public int suankiPara = 0;
-    public TextMeshProUGUI paraText; // Ekrana yazılacak yazı
+    public TextMeshProUGUI paraText; 
 
     private void Awake()
     {
-        // Singleton yapısı: Oyunun her yerinden 'MoneyManager.Instance' diye ulaşabilirsin
+        
         if (Instance == null)
         {
             Instance = this;
@@ -24,10 +24,9 @@ public class MoneyManager : MonoBehaviour
 
     void Start()
     {
-        UpdateUI(); // Başlar başlamaz ekrana yaz
+        UpdateUI(); 
     }
 
-    // Para Ekleme Fonksiyonu
     public void AddMoney(int miktar)
     {
         suankiPara += miktar;
@@ -35,7 +34,6 @@ public class MoneyManager : MonoBehaviour
         Debug.Log("Kasa: " + miktar + "₺ eklendi. Toplam: " + suankiPara);
     }
 
-    // Para Harcama Fonksiyonu (İleride market için lazım)
     public bool SpendMoney(int miktar)
     {
         if (suankiPara >= miktar)

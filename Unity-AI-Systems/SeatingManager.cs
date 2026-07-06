@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq; // Listeyi karýþtýrmak için lazým
+using System.Linq; 
 
 public class SeatingManager : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class SeatingManager : MonoBehaviour
 
     public SeatPoint GetAndReserveFreeSeat()
     {
-        // Masalarý geçici bir listeye al ve rastgele karýþtýr
+        
         List<Table> shuffledTables = tables.ToList();
         for (int i = 0; i < shuffledTables.Count; i++)
         {
@@ -24,7 +24,7 @@ public class SeatingManager : MonoBehaviour
             shuffledTables[randomIndex] = temp;
         }
 
-        // Karýþtýrýlmýþ listede boþ yer ara
+        
         foreach (Table table in shuffledTables)
         {
             SeatPoint freeSeat = table.OccupyFirstFreeSeat();

@@ -6,8 +6,8 @@ public class CustomerSpawner : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("Spawn Settings")]
-    public float spawnDelay = 2f;      // Oyun başı ilk müşteri spawmı
-    public float spawnInterval = 5f;   // Kaç saniyede bir yeni müşteri
+    public float spawnDelay = 2f;     
+    public float spawnInterval = 5f;  
 
     void Start()
     {

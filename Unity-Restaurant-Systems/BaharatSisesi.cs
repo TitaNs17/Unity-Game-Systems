@@ -9,7 +9,7 @@ public class BaharatSisesi : MonoBehaviour
 
     [Header("Menzil Ayarı (YENİ)")]
     [Tooltip("Kameradan ne kadar uzağa sıkabilsin?")]
-    public float dokmeMesafesi = 10.0f; // Varsayılan 10 metre yaptık
+    public float dokmeMesafesi = 10.0f; 
 
     [Header("Tuş Ayarı")]
     public KeyCode dokmeTusu = KeyCode.Mouse0;
@@ -70,18 +70,18 @@ public class BaharatSisesi : MonoBehaviour
         var emission = partikulSistemi.emission;
         emission.enabled = true;
 
-        // KAMERANIN GÖZÜNDEN IŞIN AT
+        
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         
-        // Mavi çizgiyi sahne ekranında gör (Menzili gösterir)
+        
         Debug.DrawRay(ray.origin, ray.direction * dokmeMesafesi, Color.blue);
 
         RaycastHit hit;
 
-        // Sadece Ekmek katmanını gör
+      
         int layerMask = 1 << LayerMask.NameToLayer("Ekmek");
 
-        // İŞTE DÜZELEN KISIM: 'dokmeMesafesi' değişkenini buraya koyduk
+        
         if (Physics.Raycast(ray, out hit, dokmeMesafesi, layerMask))
         {
             Kokorec kokorec = hit.collider.GetComponent<Kokorec>();

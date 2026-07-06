@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq; // Randomlama için lazım
+using System.Linq;
 
 public class SiparisKontrol : MonoBehaviour
 {
@@ -16,10 +16,10 @@ public class SiparisKontrol : MonoBehaviour
 
     void Start()
     {
-        // Enum'daki tüm baharatları otomatik al. Artık Inspector'a elle girmenize gerek yok.
+       
         tumBaharatlar = System.Enum.GetValues(typeof(BaharatTuru)).Cast<BaharatTuru>().ToList();
         
-        // Oyun başlar başlamaz ilk siparişi oluştur
+        
         YeniSiparisOlustur();
     }
 
@@ -55,12 +55,12 @@ public class SiparisKontrol : MonoBehaviour
                 }
             }
 
-            // Sipariş tamamlanmışsa
+           
             if (siparisTamamMi)
             {
                 Debug.Log("🎉 TEBRİKLER! Sipariş tamamlandı.");
                 
-                // Yeni sipariş oluştur (Rastgelelik burada başlıyor)
+                
                 YeniSiparisOlustur();
             }
             else
@@ -70,27 +70,24 @@ public class SiparisKontrol : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Rastgele bir baharat listesi oluşturur.
-    /// </summary>
+   
     void YeniSiparisOlustur()
     {
-        // Önceki siparişi temizle
+        
         istenenler.Clear();
 
-        // Kaç farklı baharat istensin? (Örn: En az 1, en fazla 4 çeşit)
+        
         int rastgeleCesitSayisi = Random.Range(1, tumBaharatlar.Count + 1); 
 
-        // Tüm baharatları karıştır
+      
         List<BaharatTuru> karistirilmisListe = tumBaharatlar.OrderBy(a => Random.Range(0, 100)).ToList();
 
-        // Karıştırılmış listeden rastgele sayıda eleman seç
+      
         for (int i = 0; i < rastgeleCesitSayisi; i++)
         {
             istenenler.Add(karistirilmisListe[i]);
         }
         
-        // Müşterinin ne istediğini konsola yazdır
         string siparis = "YENİ SİPARİŞ: ";
         foreach(var baharat in istenenler)
         {

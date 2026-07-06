@@ -17,7 +17,7 @@ public class NPCBubbleUI : MonoBehaviour
         {
             canvasObject.SetActive(true);
 
-            // Ürünleri say ve grupla
+          
             Dictionary<ProductType, int> urunSayilari = new Dictionary<ProductType, int>();
 
             foreach (var item in npc.myOrder.items)
@@ -28,7 +28,7 @@ public class NPCBubbleUI : MonoBehaviour
                     urunSayilari[item] = 1;
             }
 
-            // Yazýyý oluþtur
+            
             string siparisYazisi = "";
             foreach (var urun in urunSayilari)
             {

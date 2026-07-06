@@ -15,7 +15,7 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(ItemInfo item)
     {
-        // 1) Ayný item varsa miktar artýr
+        
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item == item)
@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // 2) Boþ slot bul
+     
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item == null)

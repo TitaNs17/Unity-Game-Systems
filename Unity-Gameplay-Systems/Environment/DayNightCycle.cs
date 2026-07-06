@@ -6,7 +6,7 @@ public class DayNightCycle : MonoBehaviour
     [Tooltip("Gündüz süresi dakika cinsinden (15 dk = 1 gün)")]
     public float dayLengthInMinutes = 15f;  
     [Range(0, 24)]
-    public float currentTime = 8f; // Başlangıç saati
+    public float currentTime = 8f; 
 
     [Header("Skyboxes")]
     public Material morningSkybox;
@@ -81,7 +81,7 @@ public class DayNightCycle : MonoBehaviour
         else RenderSettings.skybox = nightSkybox;
     }
 
-    // Uyuyunca sabah yap
+    
     public void SleepToMorning()
     {
         currentTime = 6f;

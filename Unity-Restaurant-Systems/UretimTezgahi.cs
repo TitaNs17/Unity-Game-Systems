@@ -6,7 +6,7 @@ using TMPro;
 public class UretimTezgahi : MonoBehaviour
 {
     [Header("1. Ortaya Çıkacak Sonuç")]
-    public GameObject hazirKokorecPrefab; // Birleşme bitince doğacak tam ekmek
+    public GameObject hazirKokorecPrefab; 
     public Transform urunDogmaNoktasi;
     public float birlesmeSuresi = 3.0f;
     public TMP_Text sureYazisi;
@@ -17,7 +17,7 @@ public class UretimTezgahi : MonoBehaviour
     public Malzeme gerekliDomates;
     public Malzeme gerekliBiber;
 
-    // Tezgahın üstündeki fiziksel objeleri tuttuğumuz yer
+    
     private List<GameObject> tezgahtakiObjeler = new List<GameObject>();
     private bool uretimBasladi = false;
 
@@ -55,27 +55,27 @@ public class UretimTezgahi : MonoBehaviour
 
     private void UretimiKontrolEt()
     {
-        // Başlangıçta hiçbir şey yok varsayıyoruz
+       
         bool ekmekVar = false;
         bool kokorecVar = false;
         bool domatesVar = false;
         bool biberVar = false;
 
-        // Tezgaha konan objelere tek tek bakıyoruz
+        
         foreach (GameObject obje in tezgahtakiObjeler)
         {
             if (obje == null) continue;
             
             Malzeme m = obje.GetComponent<Malzeme>();
 
-            // Girdiğin prefablarla eşleşiyor mu kontrolü
+           
             if (gerekliEkmek != null && m.tur == gerekliEkmek.tur) ekmekVar = true;
             if (gerekliKokorec != null && m.tur == gerekliKokorec.tur) kokorecVar = true;
             if (gerekliDomates != null && m.tur == gerekliDomates.tur) domatesVar = true;
             if (gerekliBiber != null && m.tur == gerekliBiber.tur) biberVar = true;
         }
 
-        // Eğer senin belirlediğin 4 prefabın da türü tezgahta mevcutsa, birleşmeyi başlat
+        
         if (ekmekVar && kokorecVar && domatesVar && biberVar)
         {
             StartCoroutine(UretimSureci());
@@ -96,14 +96,14 @@ public class UretimTezgahi : MonoBehaviour
 
         if (sureYazisi != null) sureYazisi.text = "HAZIR!";
 
-        // 1. Tezgahtaki eski malzemeleri yok et
+       
         foreach (GameObject obje in tezgahtakiObjeler)
         {
             if (obje != null) Destroy(obje);
         }
         tezgahtakiObjeler.Clear();
 
-        // 2. Tam kokoreç ekmeğini yarat
+        
         Vector3 spawnPos = urunDogmaNoktasi != null ? urunDogmaNoktasi.position : transform.position;
         Instantiate(hazirKokorecPrefab, spawnPos, Quaternion.identity);
 

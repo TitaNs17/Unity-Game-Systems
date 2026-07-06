@@ -7,7 +7,7 @@ public class InteractionSystem : MonoBehaviour
     public Camera cam;
     public KeyCode key = KeyCode.E;
 
-    public TMP_Text interactionText; // ekranda "E - Kes", "E - Al", "E - Pi�ir" gibi
+    public TMP_Text interactionText; 
 
     private IInteractable current;
 

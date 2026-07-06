@@ -13,7 +13,7 @@ public class DoorController : MonoBehaviour, IInteractable
 
     [Header("Otomatik Kapanma")]
     public bool otomatikKapansin = true;
-    public float kapanmaSuresi = 3.0f; // 3 saniye sonra kapansın
+    public float kapanmaSuresi = 3.0f; 
     private float kapanmaZamanlayici;
 
     private bool isOpen = false;
@@ -31,7 +31,7 @@ public class DoorController : MonoBehaviour, IInteractable
 
     void Update()
     {
-        // NPC Mesafe Kontrolü
+        
         GameObject[] npcs = GameObject.FindGameObjectsWithTag("NPC");
         bool yakinlardaNPCVar = false;
 
@@ -44,7 +44,6 @@ public class DoorController : MonoBehaviour, IInteractable
             }
         }
 
-        // Otomatik Kapanma Mantığı
         if (otomatikKapansin && isOpen && !yakinlardaNPCVar)
         {
             kapanmaZamanlayici += Time.deltaTime;
@@ -54,7 +53,7 @@ public class DoorController : MonoBehaviour, IInteractable
             }
         }
 
-        // Yumuşak Hareket
+       
         if (leftHinge)
         {
             Quaternion target = isOpen ? leftOpen : leftClosed;
@@ -76,7 +75,7 @@ public class DoorController : MonoBehaviour, IInteractable
     public void OpenDoor()
     {
         isOpen = true;
-        kapanmaZamanlayici = 0; // Zamanlayıcıyı sıfırla
+        kapanmaZamanlayici = 0; 
     }
 
     public void CloseDoor()

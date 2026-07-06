@@ -8,7 +8,7 @@ public class NPCWander : MonoBehaviour
     private NavMeshAgent agent;
     private List<Transform> waypoints;
     private NPCManager manager;
-    private Animator anim; // Animasyon için eklendi
+    private Animator anim; 
 
     [Header("NPC Yaşam Döngüsü")]
     public int minHedefSayisi = 5;
@@ -22,13 +22,13 @@ public class NPCWander : MonoBehaviour
 
     private bool isWaiting = false;
 
-    // Animator Parametre İsimleri
+   
     private string isWalking = "isWalking";
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>(); // Animator'ı yakalıyoruz
+        anim = GetComponent<Animator>(); 
         
         toplamGezilecekNokta = Random.Range(minHedefSayisi, maxHedefSayisi);
     }
@@ -44,12 +44,12 @@ public class NPCWander : MonoBehaviour
     {
         if (waypoints == null || isWaiting) 
         {
-            // Beklerken veya hedef yokken yürüme animasyonunu kapat
+            
             if(anim != null) anim.SetBool(isWalking, false);
             return;
         }
 
-        // Hız kontrolü ile yürüme animasyonunu tetikle
+       
         if (anim != null)
         {
             bool moving = agent.velocity.magnitude > 0.1f && agent.remainingDistance > agent.stoppingDistance;
@@ -75,7 +75,7 @@ public class NPCWander : MonoBehaviour
     IEnumerator WaitAndMove()
     {
         isWaiting = true;
-        // Durduğunda animasyonu sıfırla
+       
         if(anim != null) anim.SetBool(isWalking, false);
         
         yield return new WaitForSeconds(Random.Range(minBekleme, maxBekleme));

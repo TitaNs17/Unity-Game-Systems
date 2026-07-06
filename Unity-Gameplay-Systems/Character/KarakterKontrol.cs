@@ -10,7 +10,7 @@ public class KarakterKontrol : MonoBehaviour
 
     [Header("Yerçekimi ve Ground Check (ESKİ SİSTEM GERİ GELDİ)")]
     public float gravity = -20f; 
-    public float fallMultiplier = 1.5f; // Süzülmeyi engelleyen çarpan
+    public float fallMultiplier = 1.5f; 
     public Transform groundCheck;
     public float groundDistance = 0.4f; 
     public LayerMask groundMask;
@@ -56,7 +56,7 @@ public class KarakterKontrol : MonoBehaviour
 
     void Update()
     {
-        // --- SENİN ORİJİNAL KÜRE KONTROLÜN GERİ GELDİ ---
+        
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
@@ -65,13 +65,12 @@ public class KarakterKontrol : MonoBehaviour
 
             if (!wasGroundedLastFrame)
             {
-                // Yere ilk temas anı
+               
                 landingOffset = -landingBobMultiplier;
                 headBobTimer = 0f;
             }
         }
 
-        // --- Klavye girişi ---
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -80,13 +79,12 @@ public class KarakterKontrol : MonoBehaviour
         Vector3 move = transform.right * horizontal + transform.forward * vertical;
         controller.Move(move * currentSpeed * Time.deltaTime);
 
-        // --- Zıplama ---
+        
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        // --- Yerçekimi (Süzülmeyi engeller) ---
         if (velocity.y < 0 && !isGrounded)
         {
             velocity.y += gravity * fallMultiplier * Time.deltaTime;
@@ -98,7 +96,7 @@ public class KarakterKontrol : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-        // --- Mouse ile bakış ---
+       
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -108,7 +106,7 @@ public class KarakterKontrol : MonoBehaviour
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
 
-        // --- Head Bob ---
+       
         HandleHeadBob(move.magnitude > 0.1f ? currentSpeed : 0f);
 
         wasGroundedLastFrame = isGrounded;
@@ -137,8 +135,7 @@ public class KarakterKontrol : MonoBehaviour
 
         targetY += landingOffset;
 
-        // BU SATIR ZEMİNİN ALTINI GÖRMENİ ENGELLER
-        // Kamera yüksekliğini kilitliyoruz, belli bir seviyenin altına asla inemez.
+        
         targetY = Mathf.Max(targetY, cameraStartPos.y - landingBobMultiplier - 0.05f);
 
         Vector3 targetPosition = new Vector3(cameraStartPos.x, targetY, cameraStartPos.z);

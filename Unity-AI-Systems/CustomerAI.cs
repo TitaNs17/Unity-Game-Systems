@@ -9,14 +9,14 @@ public class CustomerAI : MonoBehaviour
 
     private SeatPoint assignedSeat;
     private bool hasArrived = false;
-    private Vector3 exitPosition; // Çıkış noktası
+    private Vector3 exitPosition; 
     private bool returning = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
 
-        // Spawn noktasını çıkış olarak belirle
+        
         exitPosition = transform.position;
 
         assignedSeat = SeatingManager.Instance.GetAndReserveFreeSeat();
@@ -35,16 +35,16 @@ public class CustomerAI : MonoBehaviour
     {
         if (returning)
         {
-            // Çıkış noktasına ulaştı mı?
+           
             if (!agent.pathPending && agent.remainingDistance < 0.5f)
             {
                 Debug.Log("Müşteri dükkandan çıktı.");
                 Destroy(gameObject);
             }
-            return; // Çıkış yolundaysa aşağıyı kontrol etme
+            return; 
         }
 
-        // Masaya varış kontrolü
+        
         if (!hasArrived && !agent.pathPending && agent.remainingDistance < 0.5f)
         {
             hasArrived = true;
@@ -57,10 +57,10 @@ public class CustomerAI : MonoBehaviour
         agent.isStopped = true;
         yield return new WaitForSeconds(eatingTime);
 
-        // Koltuğu boşalt
+      
         if (assignedSeat != null) assignedSeat.isOccupied = false;
 
-        // Çıkışa yönlendir
+       
         returning = true;
         agent.isStopped = false;
         agent.SetDestination(exitPosition);

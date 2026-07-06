@@ -9,7 +9,7 @@ public class BroomSystem : MonoBehaviour
 
     [Header("--- TEMİZLİK HIZI ---")]
     public float cleaningRadius = 1.5f;
-    public float scrubSpeed = 1.5f; // Saydamlaşma hızı
+    public float scrubSpeed = 1.5f; 
 
     [Header("--- BAĞLANTILAR ---")]
     public Transform handPoint;
@@ -19,14 +19,14 @@ public class BroomSystem : MonoBehaviour
 
     void Update()
     {
-        // E TUŞU: AL / BIRAK
+     
         if (Input.GetKeyDown(interactKey))
         {
             if (heldObject == null) TryGrab();
             else DropObject();
         }
 
-        // BASILI TUTMA: Sadece süpürge varsa çalışır
+       
         if (Input.GetMouseButton(0) && heldObject != null)
         {
             if (heldObject.CompareTag("Supurge"))
@@ -52,14 +52,14 @@ public class BroomSystem : MonoBehaviour
                     Renderer rend = col.GetComponent<Renderer>();
                     if (rend != null)
                     {
-                        // --- YENİ SAYDAMLAŞMA (FADE OUT) MANTIĞI ---
+                        
                         Color currentColor = rend.material.color;
 
-                        // Alpha (Saydamlık) değerini scrubSpeed ile düşür
+                        
                         currentColor.a -= Time.deltaTime * scrubSpeed;
                         rend.material.color = currentColor;
 
-                        // Saydamlık %1'in altına indiyse tamamen sil
+                        
                         if (currentColor.a <= 0.01f)
                         {
                             dirtManager.RemoveDirt(col.gameObject);

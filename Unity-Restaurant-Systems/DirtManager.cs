@@ -40,7 +40,6 @@ public class DirtManager : MonoBehaviour
             {
                 SpawnDirt();
 
-                // MÜŞTERİ POPÜLASYONUNA GÖRE YENİ SÜRE HESAPLA
                 CalculateNextSpawnTime();
             }
         }
@@ -48,13 +47,11 @@ public class DirtManager : MonoBehaviour
 
     void CalculateNextSpawnTime()
     {
-        // SOKAKTAKİLERİ DEĞİL, SADECE DÜKKANDA OTURANLARI SAY
         NPCController[] allNPCs = FindObjectsByType<NPCController>(FindObjectsSortMode.None);
         int eatingCustomerCount = 0;
 
         foreach (NPCController npc in allNPCs)
         {
-            // Sadece masada yemek bekleyen/yiyenleri say
             if (npc.currentState == NPCController.NPCState.Eating)
             {
                 eatingCustomerCount++;
@@ -63,16 +60,14 @@ public class DirtManager : MonoBehaviour
 
         if (eatingCustomerCount == 0)
         {
-            // Dükkan bomboşsa çok çok nadir kirlensin. 
-            // (baseSpawnInterval 10 ise, 10 * 4 = 40 saniyede bir leke çıkar)
+            
             timer = baseSpawnInterval * 4f;
         }
         else
         {
-            // İçerideki adam sayısına göre kirlenme süresini böl
+           
             float dynamicInterval = baseSpawnInterval / eatingCustomerCount;
 
-            // Süre çok düşmesin diye sınır koy
             timer = Mathf.Max(dynamicInterval, minSpawnInterval);
         }
     }
