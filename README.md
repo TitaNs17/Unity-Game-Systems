@@ -1,19 +1,16 @@
-# Unity Gameplay Systems
+Unity Game Systems
 
-A collection of reusable gameplay systems developed in Unity using C#.
+A collection of reusable gameplay systems developed with Unity and C# from multiple personal and academic game projects.
 
-## Systems
+Included Systems
 
-- Character Controller
-- Inventory System
-- Object Interaction
-- Day/Night Cycle
-- Door Controller
-
-## Engine
-
-Unity 6
-
-## Language
-
-C#
+Character Controller
+Inventory System
+NPC AI
+Cooking System
+Restaurant Management
+Order System
+Day/Night Cycle
+Survival Mechanics
+Multiplayer Utilities
+UI Systems
