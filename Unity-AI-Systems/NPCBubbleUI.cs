@@ -1,53 +1,66 @@
-using UnityEngine;
-using TMPro;
 using System.Collections.Generic;
+using System.Text;
+using TMPro;
+using UnityEngine;
 
 public class NPCBubbleUI : MonoBehaviour
 {
-    public NPCController npc;
-    public TextMeshProUGUI bubbleText;
-    public GameObject canvasObject;
+    [SerializeField] private NPCController npc;
+    [SerializeField] private TextMeshProUGUI bubbleText;
+    [SerializeField] private GameObject canvasObject;
 
-    void Update()
+    private readonly Dictionary<ProductType, int> productCounts = new Dictionary<ProductType, int>();
+    private readonly StringBuilder builder = new StringBuilder(128);
+
+    private void Awake()
     {
-        if (npc.currentState == NPCController.NPCState.Eating &&
-            npc.myOrder != null &&
-            !npc.myOrder.isCompleted &&
-            npc.myOrder.remainingTime > 0)
+        if (npc == null)
+            npc = GetComponentInParent<NPCController>();
+
+        if (canvasObject == null)
+            canvasObject = gameObject;
+    }
+
+    private void Update()
+    {
+        var order = npc != null ? npc.myOrder : null;
+        var shouldShow = npc != null &&
+                         npc.currentState == NPCController.NPCState.WaitingForOrder &&
+                         order != null &&
+                         !order.isCompleted &&
+                         order.remainingTime > 0f;
+
+        if (canvasObject != null && canvasObject.activeSelf != shouldShow)
+            canvasObject.SetActive(shouldShow);
+
+        if (!shouldShow || bubbleText == null)
+            return;
+
+        productCounts.Clear();
+        if (order.items != null)
         {
-            canvasObject.SetActive(true);
-
-          
-            Dictionary<ProductType, int> urunSayilari = new Dictionary<ProductType, int>();
-
-            foreach (var item in npc.myOrder.items)
+            foreach (var item in order.items)
             {
-                if (urunSayilari.ContainsKey(item))
-                    urunSayilari[item]++;
+                if (productCounts.TryGetValue(item, out var count))
+                    productCounts[item] = count + 1;
                 else
-                    urunSayilari[item] = 1;
+                    productCounts[item] = 1;
             }
-
-            
-            string siparisYazisi = "";
-            foreach (var urun in urunSayilari)
-            {
-                if (urun.Value > 1)
-                {
-                    siparisYazisi += urun.Value + "x " + urun.Key.ToString() + "\n";
-                }
-                else
-                {
-                    siparisYazisi += urun.Key.ToString() + "\n";
-                }
-            }
-
-            siparisYazisi += "<color=red>" + (int)npc.myOrder.remainingTime + " sn</color>";
-            bubbleText.text = siparisYazisi;
         }
-        else
+
+        builder.Clear();
+        foreach (var product in productCounts)
         {
-            canvasObject.SetActive(false);
+            if (product.Value > 1)
+                builder.Append(product.Value).Append("x ");
+
+            builder.Append(product.Key).AppendLine();
         }
+
+        builder.Append("<color=red>")
+               .Append(Mathf.CeilToInt(order.remainingTime))
+               .Append(" sn</color>");
+
+        bubbleText.text = builder.ToString();
     }
 }
