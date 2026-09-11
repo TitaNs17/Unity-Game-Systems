@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zeki Can Biçim | Unity Gameplay Programmer</title>
+  <meta name="description" content="Unity gameplay programming portfolio focused on reusable systems, AI, simulation mechanics and C# architecture.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="nav">
+      <a class="brand" href="#top">ZCB</a>
+      <div class="nav-links">
+        <a href="#systems">Systems</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow">Unity · C# · Gameplay Systems</div>
+        <h1>I build gameplay systems that are practical, reusable and easy to extend.</h1>
+        <p class="hero-copy">My focus is gameplay programming for simulation and systems-driven games: player interaction, NPC behaviour, inventory, economy, cooking, save systems and reusable gameplay architecture.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="https://github.com/TitaNs17/Unity-Game-Systems">View Repository</a>
+          <a class="button secondary" href="#systems">Explore Systems</a>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="portfolio highlights">
+        <div class="metric"><strong>Unity</strong><span>Gameplay engineering</span></div>
+        <div class="metric"><strong>C#</strong><span>Reusable systems</span></div>
+        <div class="metric"><strong>AI</strong><span>NPC and customer logic</span></div>
+        <div class="metric"><strong>Simulation</strong><span>Orders, economy, environment</span></div>
+      </section>
+
+      <section id="systems" class="section">
+        <div class="section-heading">
+          <span>Selected work</span>
+          <h2>Gameplay systems</h2>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="card-tag">Interaction</div>
+            <h3>Player Interaction Layer</h3>
+            <p>Raycast-driven interaction using a small interface so doors, items, stations and world objects can expose their own behaviour without hard dependencies.</p>
+            <code>IInteractable · Interactor</code>
+          </article>
+          <article class="card">
+            <div class="card-tag">Architecture</div>
+            <h3>State Machine</h3>
+            <p>Engine-independent state flow for NPCs, player modes and game states with explicit enter, tick and exit lifecycle methods.</p>
+            <code>IState · StateMachine</code>
+          </article>
+          <article class="card">
+            <div class="card-tag">Performance</div>
+            <h3>Component Pool</h3>
+            <p>A generic pool for frequently spawned Unity components that reduces repeated instantiate and destroy calls.</p>
+            <code>ComponentPool&lt;T&gt;</code>
+          </article>
+          <article class="card">
+            <div class="card-tag">Persistence</div>
+            <h3>Save System</h3>
+            <p>Versioned JSON save data with temporary-file replacement to keep the save path simple and resilient.</p>
+            <code>SaveGameService</code>
+          </article>
+          <article class="card">
+            <div class="card-tag">Simulation</div>
+            <h3>Restaurant Systems</h3>
+            <p>Orders, customers, cooking, grill slots, economy, cleaning and ingredient interactions built from real gameplay prototypes.</p>
+            <code>Orders · Cooking · Economy</code>
+          </article>
+          <article class="card">
+            <div class="card-tag">NPC</div>
+            <h3>Customer AI</h3>
+            <p>NavMesh-based movement, seating, wandering and customer behaviour for simulation-focused gameplay.</p>
+            <code>NavMesh · Seating · Behaviour</code>
+          </article>
+        </div>
+      </section>
+
+      <section id="architecture" class="section architecture">
+        <div class="section-heading">
+          <span>How I work</span>
+          <h2>Code that can grow with the project</h2>
+        </div>
+        <div class="architecture-grid">
+          <div>
+            <h3>Keep Unity-facing code focused</h3>
+            <p>MonoBehaviours handle scene references, input and engine lifecycle. Logic that does not need Unity stays in plain C# classes where possible.</p>
+          </div>
+          <div>
+            <h3>Reduce unnecessary coupling</h3>
+            <p>Interfaces, events and small services make it easier to replace or extend individual systems without rewriting the rest of the game.</p>
+          </div>
+          <div>
+            <h3>Build from gameplay needs</h3>
+            <p>Most systems in this repository came from actual prototypes, then were cleaned up into reusable pieces after the gameplay worked.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section timeline">
+        <div class="section-heading">
+          <span>Current direction</span>
+          <h2>What I am improving</h2>
+        </div>
+        <div class="timeline-list">
+          <div><span>01</span><p>Reusable gameplay architecture and cleaner boundaries between systems.</p></div>
+          <div><span>02</span><p>Simulation-focused AI, customer flow and world interaction.</p></div>
+          <div><span>03</span><p>Performance-friendly utilities such as pooling and event-driven communication.</p></div>
+          <div><span>04</span><p>Testing and maintainability for systems that can be reused across projects.</p></div>
+        </div>
+      </section>
+
+      <section id="contact" class="contact">
+        <div>
+          <span class="eyebrow">Available on GitHub</span>
+          <h2>See the code behind the systems.</h2>
+        </div>
+        <a class="button primary" href="https://github.com/TitaNs17">GitHub Profile</a>
+      </section>
+    </main>
+
+    <footer>
+      <span>Zeki Can Biçim</span>
+      <span>Unity Gameplay Programmer</span>
+    </footer>
+  </div>
+</body>
+</html>
