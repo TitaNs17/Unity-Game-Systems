@@ -20,9 +20,9 @@ namespace UnityGameSystems.Restaurant.Staff
 
         public StaffMember(string name, StaffRole role, float skill, decimal wagePerShift)
         {
-            Name = name;
+            Name = string.IsNullOrWhiteSpace(name) ? "Staff" : name;
             Role = role;
-            Skill = Math.Clamp(skill, 0.5f, 2f);
+            Skill = Math.Max(0.5f, Math.Min(2f, skill));
             WagePerShift = Math.Max(0m, wagePerShift);
         }
 
@@ -43,7 +43,7 @@ namespace UnityGameSystems.Restaurant.Staff
         public void Train(float amount)
         {
             if (amount <= 0f) return;
-            Skill = Math.Clamp(Skill + amount, 0.5f, 2f);
+            Skill = Math.Max(0.5f, Math.Min(2f, Skill + amount));
         }
     }
 }

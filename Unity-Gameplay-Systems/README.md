@@ -2,6 +2,14 @@
 
 Reusable Unity components that can be dropped into a project without depending on a specific scene or game.
 
+## Project layout
+
+Most reusable systems live in responsibility-based folders such as `Combat`, `Interaction`, `Inventory`, `Quests`, `Save`, `Settings` and `Utilities`.
+
+`Legacy/` contains older prototype code kept for reference and portfolio history. It is intentionally separated from the newer reusable architecture so the two styles are not confused.
+
+`Compatibility/` contains small contracts required by older prototype scripts. The legacy global `IInteractable` contract is separate from the newer `UnityGameSystems.Interaction.IInteractable` API, so both generations can exist in the same project without a type-name collision.
+
 ## Health and damage
 
 1. Add `Health` to the player or NPC root object.

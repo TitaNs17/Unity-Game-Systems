@@ -11,7 +11,8 @@ namespace UnityGameSystems.Restaurant.Stock
 
         public void Record(string ingredientId, int amount, decimal unitCost)
         {
-            if (string.IsNullOrWhiteSpace(ingredientId) || amount <= 0) return;
+            if (string.IsNullOrWhiteSpace(ingredientId) || amount <= 0)
+                return;
 
             wastedUnits.TryGetValue(ingredientId, out var current);
             wastedUnits[ingredientId] = current + amount;
@@ -20,6 +21,9 @@ namespace UnityGameSystems.Restaurant.Stock
 
         public int GetWastedUnits(string ingredientId)
         {
+            if (string.IsNullOrWhiteSpace(ingredientId))
+                return 0;
+
             return wastedUnits.TryGetValue(ingredientId, out var amount) ? amount : 0;
         }
 

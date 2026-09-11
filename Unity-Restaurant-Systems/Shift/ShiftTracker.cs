@@ -7,6 +7,7 @@ namespace UnityGameSystems.Restaurant.Shift
         public ShiftSummary Summary => summary;
 
         public void RecordOrderReceived() => summary.OrdersReceived++;
+
         public void RecordOrderCompleted(decimal revenue, int customers = 1)
         {
             summary.OrdersCompleted++;

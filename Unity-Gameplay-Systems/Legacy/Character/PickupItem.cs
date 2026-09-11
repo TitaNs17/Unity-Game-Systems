@@ -4,7 +4,7 @@ public class PickupItem : MonoBehaviour, IInteractable
 {
     public string itemName = "Obje";
 
-    [Header("Elde Tutma Ayarı")]
+    [Header("Hold Offset")]
     public Vector3 holdPositionOffset = Vector3.zero;
     public Vector3 holdRotationOffset = Vector3.zero;
 
@@ -15,11 +15,8 @@ public class PickupItem : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        AlmaBirakmaSistemi almaSistemi = FindFirstObjectByType<AlmaBirakmaSistemi>();
-
+        var almaSistemi = FindFirstObjectByType<AlmaBirakmaSistemi>();
         if (almaSistemi != null && almaSistemi.tutulanObje == null)
-        {
-            almaSistemi.Al(this.gameObject);
-        }
+            almaSistemi.Al(gameObject);
     }
 }

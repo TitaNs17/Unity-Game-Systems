@@ -16,15 +16,20 @@ namespace UnityGameSystems.Restaurant.Seating
 
         public RestaurantTable FindBestTable(int partySize)
         {
+            if (partySize <= 0)
+                return null;
+
             RestaurantTable best = null;
             var bestWaste = int.MaxValue;
 
             foreach (var table in tables)
             {
-                if (table.IsReserved || table.AvailableSeats < partySize) continue;
+                if (table == null || table.IsReserved || table.AvailableSeats < partySize)
+                    continue;
 
                 var waste = table.AvailableSeats - partySize;
-                if (waste >= bestWaste) continue;
+                if (waste >= bestWaste)
+                    continue;
 
                 best = table;
                 bestWaste = waste;

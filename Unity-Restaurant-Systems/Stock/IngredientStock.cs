@@ -13,7 +13,7 @@ namespace UnityGameSystems.Restaurant.Stock
 
         public IngredientStock(string ingredientId, int quantity, int reorderLevel, decimal unitCost)
         {
-            IngredientId = ingredientId;
+            IngredientId = ingredientId ?? string.Empty;
             Quantity = Math.Max(0, quantity);
             ReorderLevel = Math.Max(0, reorderLevel);
             UnitCost = Math.Max(0m, unitCost);
@@ -27,7 +27,9 @@ namespace UnityGameSystems.Restaurant.Stock
 
         public bool TryConsume(int amount)
         {
-            if (amount <= 0 || Quantity < amount) return false;
+            if (amount <= 0 || Quantity < amount)
+                return false;
+
             Quantity -= amount;
             return true;
         }

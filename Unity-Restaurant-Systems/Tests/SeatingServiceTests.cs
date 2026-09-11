@@ -36,6 +36,16 @@ namespace UnityGameSystems.Restaurant.Tests
 
             Assert.AreSame(open, service.FindBestTable(2));
         }
+
+        [Test]
+        public void InvalidPartySizeDoesNotSelectTable()
+        {
+            var service = new SeatingService();
+            service.Register(new RestaurantTable(4));
+
+            Assert.IsNull(service.FindBestTable(0));
+            Assert.IsFalse(service.TrySeatParty(-1, out _));
+        }
     }
 }
 #endif
