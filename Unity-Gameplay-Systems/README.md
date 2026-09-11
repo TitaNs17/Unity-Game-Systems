@@ -26,6 +26,43 @@ When the player enters a checkpoint it becomes the active spawn location. When `
 
 The respawn controller supports Rigidbody and CharacterController based players.
 
+## Weapons
+
+1. Create a weapon asset from `Create > Game > Weapon`.
+2. Configure damage, fire rate, magazine size, reload duration, range and spread.
+3. Add `HitscanWeapon` to the weapon GameObject.
+4. Assign the weapon asset and optionally assign an aim camera, muzzle transform, particle effect and AudioSource.
+5. Call `TryFire()` from your input code and `TryReload()` from the reload action.
+
+`HitscanWeapon` handles fire-rate limiting, magazine state, automatic reload, raycasts, damage application, muzzle flash, audio and hit events. Input is not embedded in the weapon so the same component works with keyboard/mouse, controller, mobile UI or Unity's new Input System.
+
+## Enemy AI
+
+1. Add a `NavMeshAgent` to the enemy.
+2. Add `Health` and `EnemyBrain` to the same root object.
+3. Assign the player Transform as `Target`.
+4. Configure detection range, attack range, damage and cooldown.
+5. Bake a NavMesh for the scene.
+
+The enemy stays idle outside detection range, chases the target while detected, checks line of sight before attacking and applies damage through the shared `Health` component. Animator support is optional. If an Animator is assigned, the expected parameters are `Moving` (bool), `Attack` (trigger) and `Die` (trigger).
+
+## Loot
+
+1. Create a loot asset from `Create > Game > Loot Table`.
+2. Add prefab entries, weights and min/max quantities.
+3. Add `LootDropper` to an enemy that already has `Health`.
+4. Assign the loot table.
+
+When the enemy dies, the component performs one weighted roll and instantiates the selected prefab. Rigidbody loot can receive an optional upward impulse and random scatter.
+
+## XP and levels
+
+Add `ExperienceComponent` to the player. Configure base required XP and the growth multiplier. Other systems can call `AddExperience(amount)` without knowing how levels are calculated.
+
+To reward XP from an enemy, add `ExperienceReward` to the enemy, assign its `Health`, assign the player's `ExperienceComponent`, and set the XP amount. The reward is granted once when the enemy dies.
+
+`ExperienceProgression` contains the engine-independent progression logic and supports multiple level-ups from a single XP grant, state restoration and unit testing.
+
 ## Pause
 
 Add `PauseManager` once in the scene. Connect a UI button or your own input code to `Toggle`, `Pause` or `Resume`. It handles `Time.timeScale` and can optionally manage cursor visibility and locking.
@@ -58,4 +95,4 @@ Add a Unity UI `Slider`, then add `HealthBarBinder` to the same GameObject. Assi
 
 ## Compatibility
 
-The systems only use UnityEngine and standard Unity UI APIs. They do not require third-party packages or a specific input package. Tests are wrapped in `UNITY_INCLUDE_TESTS` so normal player builds do not require NUnit references.
+The gameplay components use standard Unity APIs. `EnemyBrain` requires Unity NavMesh support because it uses `NavMeshAgent`. No third-party packages are required. Input is intentionally left outside reusable systems. Tests are wrapped in `UNITY_INCLUDE_TESTS` so normal player builds do not require NUnit references.
