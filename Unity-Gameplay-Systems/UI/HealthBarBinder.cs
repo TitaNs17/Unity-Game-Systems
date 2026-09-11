@@ -8,12 +8,16 @@ namespace UnityGameSystems.UI
     {
         [SerializeField] private Health health;
         [SerializeField] private Slider slider;
+        [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private bool hideWhenFull;
 
         private void Awake()
         {
             if (slider == null)
                 slider = GetComponent<Slider>();
+
+            if (canvasGroup == null)
+                canvasGroup = GetComponent<CanvasGroup>();
         }
 
         private void OnEnable()
@@ -51,8 +55,8 @@ namespace UnityGameSystems.UI
             slider.maxValue = Mathf.Max(1f, max);
             slider.value = Mathf.Clamp(current, 0f, slider.maxValue);
 
-            if (hideWhenFull)
-                slider.gameObject.SetActive(current < max);
+            if (canvasGroup != null)
+                canvasGroup.alpha = hideWhenFull && current >= max ? 0f : 1f;
         }
     }
 }
