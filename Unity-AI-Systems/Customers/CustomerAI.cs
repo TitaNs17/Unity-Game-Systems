@@ -65,9 +65,7 @@ public class CustomerAI : MonoBehaviour
         agent.isStopped = true;
 
         if (assignedSeat != null)
-        {
             transform.SetPositionAndRotation(assignedSeat.transform.position, assignedSeat.transform.rotation);
-        }
 
         yield return new WaitForSeconds(eatingTime);
 
