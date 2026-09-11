@@ -1,42 +1,70 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class InteractionSystem : MonoBehaviour
 {
-    public float interactDistance = 3f;
-    public Camera cam;
-    public KeyCode key = KeyCode.E;
-
-    public TMP_Text interactionText; 
+    [SerializeField, Min(0.1f)] private float interactDistance = 3f;
+    [SerializeField] private Camera cam;
+    [SerializeField] private KeyCode key = KeyCode.E;
+    [SerializeField] private TMP_Text interactionText;
+    [SerializeField] private LayerMask interactionMask = ~0;
 
     private IInteractable current;
 
-    void Update()
+    private void Reset()
+    {
+        cam = GetComponentInChildren<Camera>();
+    }
+
+    private void Awake()
+    {
+        if (cam == null)
+            cam = GetComponentInChildren<Camera>();
+    }
+
+    private void Update()
     {
         DetectInteractable();
-        HandleInput();
+
+        if (current != null && Input.GetKeyDown(key))
+            current.Interact();
     }
 
-    void DetectInteractable()
+    private void DetectInteractable()
     {
         current = null;
-        interactionText.text = "";
+        SetPrompt(string.Empty);
 
-        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, interactDistance))
-        {
-            current = hit.collider.GetComponent<IInteractable>();
+        if (cam == null)
+            return;
 
-            if (current != null)
-                interactionText.text = "[E] " + current.GetInteractionText();
-        }
+        var ray = new Ray(cam.transform.position, cam.transform.forward);
+        if (!Physics.Raycast(ray, out var hit, interactDistance, interactionMask, QueryTriggerInteraction.Collide))
+            return;
+
+        current = FindInteractable(hit.collider);
+        if (current != null)
+            SetPrompt($"[{key}] {current.GetInteractionText()}");
     }
 
-    void HandleInput()
+    private static IInteractable FindInteractable(Collider collider)
     {
-        if (current != null && Input.GetKeyDown(key))
+        if (collider == null)
+            return null;
+
+        var behaviours = collider.GetComponentsInParent<MonoBehaviour>();
+        foreach (var behaviour in behaviours)
         {
-            current.Interact();
+            if (behaviour is IInteractable interactable)
+                return interactable;
         }
+
+        return null;
+    }
+
+    private void SetPrompt(string value)
+    {
+        if (interactionText != null)
+            interactionText.text = value;
     }
 }
