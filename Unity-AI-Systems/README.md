@@ -31,25 +31,41 @@ Seats are reserved atomically through `SeatPoint.TryReserve` and are released wh
 
 `NPCWander` moves through waypoint targets for a random number of stops, waits between destinations and asks `NPCManager` for a replacement NPC when its route is finished.
 
-## Reusable vision sensor
+## Vision and perception
 
-Add `Reusable/VisionSensor` to an NPC that needs perception.
+Add `Reusable/VisionSensor` to an NPC that needs sight-based perception. Configure eye transform, range, field of view, target layers, obstruction layers and scan interval.
 
-Configure:
+Add `Reusable/HearingSensor` when the NPC should react to sound. Any object can use `NoiseEmitter.Emit()` or call `NoiseSystem.Emit(...)` directly. Hearing strength falls off with distance and can optionally be blocked by geometry.
 
-- `Eye`: origin and forward direction of vision
-- `Range`: maximum detection distance
-- `Field Of View`: view cone in degrees
-- `Target Mask`: layers that can be detected
-- `Obstruction Mask`: layers that can block line of sight
-- `Scan Interval`: how often the sensor scans
+`PerceptionController` combines vision, hearing and `SuspicionMeter`. Visual contact raises suspicion continuously, audible events add suspicion instantly and the controller exposes the latest interesting world position for investigation behaviours.
 
-Use `CurrentTarget`, `TargetAcquired` and `TargetLost` from other AI behaviours.
+## AI state machine
 
-## Reusable patrol agent
+`Reusable/AIStateMachine` is a small engine-independent state machine for behaviours such as idle, patrol, investigate, chase, attack and flee. States implement `IAIState` and can be registered once, switched by type and ticked from a MonoBehaviour.
+
+## Patrol
 
 Add `Reusable/PatrolAgent` to a GameObject with `NavMeshAgent`, assign patrol point transforms and choose sequential or random movement. The component handles waiting, invalid paths and stopping cleanly when disabled.
 
-## Notes
+## Crowd avoidance
 
-The restaurant-specific NPC scripts are intentionally kept separate from the reusable `UnityGameSystems.AI` components. The reusable components do not depend on the restaurant order classes and can be copied into another NavMesh project independently.
+Add `Reusable/CrowdAgentTuner` beside a `NavMeshAgent` when many NPCs share the same area. It assigns a randomized avoidance priority, configurable obstacle avoidance quality and minimum personal-space radius to reduce agents locking into identical paths.
+
+## Customer personality and needs
+
+Create personality assets from `Create > AI > Customer Personality`. A profile stores patience, generosity, cleanliness tolerance and social need as normalized values.
+
+`Customers/CustomerNeeds` is a runtime model for hunger, comfort and patience. Simulation code can drain patience while waiting, increase hunger over time, restore comfort and feed the customer without coupling those values to a specific NPC controller.
+
+## Recommended composition
+
+For a general-purpose NPC prefab:
+
+1. Add `NavMeshAgent`.
+2. Add `VisionSensor` and `HearingSensor` when perception is needed.
+3. Add `PerceptionController` to combine both sensors.
+4. Add `PatrolAgent` for default roaming behaviour.
+5. Add `CrowdAgentTuner` for busy scenes.
+6. Drive high-level behaviour through `AIStateMachine` from the game-specific controller.
+
+The restaurant-specific NPC scripts remain separate from the reusable `UnityGameSystems.AI` components. The reusable systems do not depend on restaurant order classes and can be copied into another NavMesh project independently.
