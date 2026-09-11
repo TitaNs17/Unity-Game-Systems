@@ -1,64 +1,43 @@
 # Unity Game Systems
 
-A collection of gameplay code I have built while working on Unity projects. The repository is mainly a place for systems that are useful outside a single scene or prototype, so I can revisit and improve them as my projects grow.
+A collection of gameplay, AI and simulation code built while working on Unity projects. The repository keeps reusable systems separate from older project-specific prototypes so the architecture is easier to evaluate and reuse.
 
-## What's here
+## Main modules
 
-### Gameplay
-- First-person character and interaction code
-- Item pickup, cutting and inventory systems
-- Day/night and environment behaviours
-- Typed gameplay event bus
-- Reusable state machine
-- Runtime stats and modifiers
-- Generic component pooling
-- Versioned JSON save/load service
+### Unity Gameplay Systems
 
-### AI
-- NavMesh based NPC movement
-- Customer behaviour
-- Seating and wandering logic
-- NPC UI feedback
+Reusable gameplay systems including combat, health, stamina, interaction, inventory, quests, dialogue, save/load, settings, progression, loot, pooling and game-flow utilities.
 
-### Restaurant / simulation
-- Orders and customers
-- Cooking and grill slots
-- Economy and market logic
-- Cleaning / dirt systems
-- Ingredient and drink interactions
-- Menu definitions and reusable order states
-- Customer patience and satisfaction
-- Kitchen station workflow
-- Seating and reservation logic
-- Staff roles, skill and energy
-- Ingredient stock and waste tracking
-- Shift summaries with revenue, expenses and completion metrics
+Older project-specific character and interaction code lives under `Unity-Gameplay-Systems/Legacy`. Compatibility contracts used by those scripts live under `Unity-Gameplay-Systems/Compatibility` and are kept separate from the newer namespaced APIs.
+
+### Unity AI Systems
+
+NavMesh-based AI code organized into `Core`, `Customers`, `Movement`, `Seating`, `UI`, `Reusable` and `Tests`.
+
+Reusable AI includes vision, hearing, suspicion, perception, patrol, crowd tuning, state-machine logic and an `AdvancedNPCBrain` that composes patrol, investigate, chase, attack and search behavior.
+
+### Unity Restaurant Systems
+
+Restaurant simulation code organized by responsibility: menu/order flow, customers, kitchen, seating, staff, stock/waste, management, shift reporting and tests.
+
+The original project-specific restaurant scripts are isolated under `Legacy`. The newer restaurant layer no longer uses a separate `V2` folder; current systems live directly in their responsibility folders.
 
 ## Architecture notes
 
-Not every script in this repository comes from the same game. Older project-specific components are kept alongside newer reusable modules on purpose: they show how the code evolved from direct MonoBehaviour implementations toward smaller interfaces, plain C# services and event-driven systems.
+Not every script in this repository comes from the same game. Older prototype components are kept to show iteration history, while newer reusable code favors smaller interfaces, plain C# services, ScriptableObject data, event-driven communication and isolated runtime components.
 
-New reusable code avoids scene lookups where possible. Unity-facing behaviour stays in MonoBehaviours while logic that does not need the engine is kept as regular C# classes.
+Unity-facing behavior remains in MonoBehaviours when engine access is required. Logic that does not need the engine is kept as regular C# classes where possible so it can be unit tested independently.
 
-## Reusable gameplay modules
+## Selected reusable modules
 
-`Unity-Gameplay-Systems/Core/GameEventBus.cs` provides typed communication without requiring gameplay systems to hold references to one another.
-
-`Unity-Gameplay-Systems/Interaction/` separates an interactable object's behaviour from the player's raycast logic through `IInteractable`.
-
-`Unity-Gameplay-Systems/StateMachine/` contains a small engine-independent state machine suitable for NPCs, player states or game flow.
-
-`Unity-Gameplay-Systems/Stats/RuntimeStat.cs` supports flat and percentage modifiers and can remove modifiers by their source object.
-
-`Unity-Gameplay-Systems/Utilities/ComponentPool.cs` is a generic pool for Unity components used for frequently spawned objects.
-
-`Unity-Gameplay-Systems/Save/SaveGameService.cs` contains a versioned JSON save model and uses a temporary file before replacing the current save.
-
-## Restaurant simulation v2
-
-The `Unity-Restaurant-Systems/V2` folder is a cleaner simulation layer that can be reused independently from the original restaurant prototype.
-
-It includes menu data, order state transitions, customer patience, kitchen preparation, economy, reputation, seating, reservations, staff, stock, waste and shift reporting. Most of these systems are plain C# so they can be unit tested without loading a Unity scene.
+- `Unity-Gameplay-Systems/Core/GameEventBus.cs` — typed gameplay events
+- `Unity-Gameplay-Systems/Interaction/` — namespaced reusable interaction layer
+- `Unity-Gameplay-Systems/StateMachine/` — engine-independent state machine
+- `Unity-Gameplay-Systems/Stats/RuntimeStat.cs` — flat and percentage stat modifiers
+- `Unity-Gameplay-Systems/Utilities/ComponentPool.cs` — generic component pooling
+- `Unity-Gameplay-Systems/Save/` — versioned JSON persistence
+- `Unity-AI-Systems/Reusable/` — perception, patrol and high-level AI behavior
+- `Unity-Restaurant-Systems/` — testable restaurant simulation services
 
 ## Tech
 
