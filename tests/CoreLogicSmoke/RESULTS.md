@@ -1,0 +1,1 @@
+The authoritative result for these checks is the `core-logic-smoke` GitHub Actions job. A passing job means the linked engine-independent source files compiled under .NET 8 and all executable behavior checks completed successfully.

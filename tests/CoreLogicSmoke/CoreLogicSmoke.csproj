@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../Unity-AI-Systems/Reusable/AIStateMachine.cs" Link="Source/AIStateMachine.cs" />
+    <Compile Include="../../Unity-Gameplay-Systems/GameFlow/CountdownTimer.cs" Link="Source/CountdownTimer.cs" />
+    <Compile Include="../../Unity-Gameplay-Systems/Stats/RuntimeStat.cs" Link="Source/RuntimeStat.cs" />
+    <Compile Include="../../Unity-Restaurant-Systems/Seating/RestaurantTable.cs" Link="Source/RestaurantTable.cs" />
+    <Compile Include="../../Unity-Restaurant-Systems/Seating/SeatingService.cs" Link="Source/SeatingService.cs" />
+    <Compile Include="../../Unity-Restaurant-Systems/Shift/ShiftSummary.cs" Link="Source/ShiftSummary.cs" />
+    <Compile Include="../../Unity-Restaurant-Systems/Shift/ShiftTracker.cs" Link="Source/ShiftTracker.cs" />
+    <Compile Include="../../Unity-Restaurant-Systems/Staff/StaffMember.cs" Link="Source/StaffMember.cs" />
+    <Compile Include="../../Unity-Restaurant-Systems/Stock/IngredientStock.cs" Link="Source/IngredientStock.cs" />
+    <Compile Include="../../Unity-Restaurant-Systems/Stock/WasteTracker.cs" Link="Source/WasteTracker.cs" />
+  </ItemGroup>
+</Project>
