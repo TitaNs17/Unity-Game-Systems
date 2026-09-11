@@ -60,7 +60,7 @@ namespace UnityGameSystems.Respawn
 
             if (resetVelocity && cachedRigidbody != null)
             {
-                cachedRigidbody.linearVelocity = Vector3.zero;
+                cachedRigidbody.velocity = Vector3.zero;
                 cachedRigidbody.angularVelocity = Vector3.zero;
             }
 
