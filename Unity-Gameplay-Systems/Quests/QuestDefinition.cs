@@ -16,10 +16,10 @@ namespace UnityGameSystems.Quests
     {
         [SerializeField] private string questId;
         [SerializeField] private string title;
-        [SerializeField] private QuestObjective[] objectives;
+        [SerializeField] private QuestObjective[] objectives = Array.Empty<QuestObjective>();
 
         public string Id => questId;
         public string Title => title;
-        public QuestObjective[] Objectives => objectives;
+        public QuestObjective[] Objectives => objectives ?? Array.Empty<QuestObjective>();
     }
 }
