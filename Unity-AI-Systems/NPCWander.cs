@@ -1,99 +1,120 @@
-using UnityEngine;
-using UnityEngine.AI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class NPCWander : MonoBehaviour
 {
+    [Header("NPC Lifecycle")]
+    [SerializeField, Min(1)] private int minHedefSayisi = 5;
+    [SerializeField, Min(1)] private int maxHedefSayisi = 12;
+
+    [Header("Movement")]
+    [SerializeField, Min(0f)] private float minBekleme = 1f;
+    [SerializeField, Min(0f)] private float maxBekleme = 3f;
+    [SerializeField, Min(0.05f)] private float arrivalTolerance = 0.2f;
+    [SerializeField] private string walkingParameter = "isWalking";
+
     private NavMeshAgent agent;
+    private Animator anim;
     private List<Transform> waypoints;
     private NPCManager manager;
-    private Animator anim; 
-
-    [Header("NPC Yaşam Döngüsü")]
-    public int minHedefSayisi = 5;
-    public int maxHedefSayisi = 12;
     private int toplamGezilecekNokta;
-    private int gezilenNoktaSayisi = 0;
+    private int gezilenNoktaSayisi;
+    private bool isWaiting;
+    private bool initialized;
 
-    [Header("Hareket Ayarları")]
-    public float minBekleme = 1f;
-    public float maxBekleme = 3f;
-
-    private bool isWaiting = false;
-
-   
-    private string isWalking = "isWalking";
-
-    void Awake()
+    private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>(); 
-        
-        toplamGezilecekNokta = Random.Range(minHedefSayisi, maxHedefSayisi);
+        anim = GetComponent<Animator>();
+
+        var min = Mathf.Max(1, minHedefSayisi);
+        var max = Mathf.Max(min, maxHedefSayisi);
+        toplamGezilecekNokta = Random.Range(min, max + 1);
     }
 
     public void Init(List<Transform> wpListesi, NPCManager managerRef)
     {
         waypoints = wpListesi;
         manager = managerRef;
-        YeniHedefeGit();
+        initialized = waypoints != null && waypoints.Count > 0;
+
+        if (initialized)
+            YeniHedefeGit();
     }
 
-    void Update()
+    private void Update()
     {
-        if (waypoints == null || isWaiting) 
+        if (!initialized || isWaiting || agent == null || !agent.enabled || !agent.isOnNavMesh)
         {
-            
-            if(anim != null) anim.SetBool(isWalking, false);
+            SetWalking(false);
             return;
         }
 
-       
-        if (anim != null)
+        var moving = !agent.pathPending && agent.velocity.sqrMagnitude > 0.01f && agent.remainingDistance > agent.stoppingDistance;
+        SetWalking(moving);
+
+        if (agent.pathPending)
+            return;
+
+        if (agent.pathStatus == NavMeshPathStatus.PathInvalid)
         {
-            bool moving = agent.velocity.magnitude > 0.1f && agent.remainingDistance > agent.stoppingDistance;
-            anim.SetBool(isWalking, moving);
-            Debug.Log("Yürüme Durumu: " + moving);
+            YeniHedefeGit();
+            return;
         }
 
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + 0.1f)
-        {
-            gezilenNoktaSayisi++;
+        var threshold = Mathf.Max(agent.stoppingDistance, arrivalTolerance);
+        if (agent.remainingDistance > threshold)
+            return;
 
-            if (gezilenNoktaSayisi >= toplamGezilecekNokta)
-            {
-                MahalledenAyril();
-            }
-            else
-            {
-                StartCoroutine(WaitAndMove());
-            }
-        }
+        gezilenNoktaSayisi++;
+        if (gezilenNoktaSayisi >= toplamGezilecekNokta)
+            MahalledenAyril();
+        else
+            StartCoroutine(WaitAndMove());
     }
 
-    IEnumerator WaitAndMove()
+    private IEnumerator WaitAndMove()
     {
         isWaiting = true;
-       
-        if(anim != null) anim.SetBool(isWalking, false);
-        
-        yield return new WaitForSeconds(Random.Range(minBekleme, maxBekleme));
-        
-        YeniHedefeGit();
+        SetWalking(false);
+
+        var min = Mathf.Min(minBekleme, maxBekleme);
+        var max = Mathf.Max(minBekleme, maxBekleme);
+        if (max > 0f)
+            yield return new WaitForSeconds(Random.Range(min, max));
+
         isWaiting = false;
+        YeniHedefeGit();
     }
 
-    void YeniHedefeGit()
+    private void YeniHedefeGit()
     {
-        if (waypoints.Count == 0) return;
-        int rastgeleIndex = Random.Range(0, waypoints.Count);
-        agent.SetDestination(waypoints[rastgeleIndex].position);
+        if (waypoints == null || waypoints.Count == 0 || agent == null || !agent.enabled || !agent.isOnNavMesh)
+            return;
+
+        for (int attempt = 0; attempt < waypoints.Count; attempt++)
+        {
+            var target = waypoints[Random.Range(0, waypoints.Count)];
+            if (target != null && agent.SetDestination(target.position))
+                return;
+        }
     }
 
-    void MahalledenAyril()
+    private void MahalledenAyril()
     {
-        manager.SpawnNPC();
+        manager?.NotifyDespawned(gameObject);
+        if (manager != null)
+            manager.SpawnNPC();
+
         Destroy(gameObject);
+    }
+
+    private void SetWalking(bool value)
+    {
+        if (anim != null && !string.IsNullOrWhiteSpace(walkingParameter))
+            anim.SetBool(walkingParameter, value);
     }
 }
